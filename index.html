@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico de Maturidade em Governança de IA · 3Neuron</title>
+<style>
+  :root{
+    --navy:#0D1B2A; --navy2:#1A2C42; --blue:#1E4D8C; --blueLt:#3B8FD4; --cyan:#00B8D9;
+    --white:#FFFFFF; --grayLt:#F4F6F9; --grayTx:#4A5568; --grayMut:#A0AEC0;
+    --green:#1F9D6B; --amber:#E8A33D; --red:#E05656;
+    --line:rgba(255,255,255,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Calibri","Segoe UI",system-ui,Arial,sans-serif;background:var(--navy);color:var(--white);
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 60px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .brand{font-weight:700;letter-spacing:.5px;font-size:18px}
+  .brand span{color:var(--blueLt)}
+  .tag{font-size:11px;color:var(--grayMut);letter-spacing:2px;text-transform:uppercase}
+  .card{background:var(--navy2);border:1px solid var(--line);border-radius:14px;padding:30px;
+    box-shadow:0 10px 40px rgba(0,0,0,.25)}
+  .accent{width:54px;height:4px;background:var(--blueLt);border-radius:2px;margin:0 0 18px}
+  h1{font-size:30px;font-weight:700;line-height:1.15;margin-bottom:10px}
+  h1 b{color:var(--blueLt)}
+  h2{font-size:20px;font-weight:700;margin-bottom:6px}
+  .lead{color:var(--grayMut);font-size:15px;max-width:620px}
+  .muted{color:var(--grayMut)}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;
+    border-radius:9px;padding:13px 22px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;
+    transition:.15s;letter-spacing:.3px}
+  .btn:hover{background:var(--blueLt)}
+  .btn.alt{background:transparent;border:1px solid var(--blueLt);color:var(--blueLt)}
+  .btn.alt:hover{background:rgba(59,143,212,.12)}
+  .btn.cyan{background:var(--cyan);color:var(--navy)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .row{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}
+  .edsel{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+  .edcard{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:22px;cursor:pointer;transition:.15s}
+  .edcard:hover{border-color:var(--blueLt);background:rgba(59,143,212,.08)}
+  .edcard h3{font-size:17px;margin-bottom:6px}
+  .edcard .k{font-size:12px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+  .edcard p{font-size:13px;color:var(--grayMut)}
+  .prog{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-bottom:6px}
+  .prog>i{display:block;height:100%;background:var(--cyan);width:0;transition:.3s}
+  .progtxt{font-size:12px;color:var(--grayMut);margin-bottom:18px;display:flex;justify-content:space-between}
+  .dimlabel{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--blueLt);margin-bottom:8px}
+  .qtext{font-size:19px;font-weight:600;margin-bottom:20px;line-height:1.35}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);
+    border-radius:10px;padding:13px 16px;cursor:pointer;transition:.12s;font-size:14px}
+  .opt:hover{border-color:var(--blueLt)}
+  .opt.sel{border-color:var(--cyan);background:rgba(0,184,217,.12)}
+  .opt .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--grayMut);flex:0 0 auto}
+  .opt.sel .dot{border-color:var(--cyan);background:var(--cyan);box-shadow:inset 0 0 0 3px var(--navy2)}
+  .nav{display:flex;justify-content:space-between;margin-top:26px}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:13px;color:var(--grayMut);margin-bottom:6px}
+  .field input,.field select{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line);
+    border-radius:9px;padding:12px 14px;color:#fff;font-size:14px;font-family:inherit}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--blueLt)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--grayMut);margin:8px 0 18px}
+  /* results */
+  .scorehero{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .gauge{flex:0 0 auto}
+  .levelbadge{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:20px;display:inline-block}
+  .dims{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+  .dimrow{display:grid;grid-template-columns:1fr 90px;gap:12px;align-items:center}
+  .bar{height:10px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden}
+  .bar>i{display:block;height:100%;border-radius:5px}
+  .dimrow .nm{font-size:13px}
+  .dimrow .pc{font-size:12px;text-align:right;color:var(--grayMut)}
+  .recs{margin-top:28px;display:flex;flex-direction:column;gap:12px}
+  .rec{background:rgba(255,255,255,.03);border-left:4px solid var(--blueLt);border-radius:8px;padding:14px 16px}
+  .rec .t{font-weight:700;font-size:14px;margin-bottom:3px}
+  .rec .d{font-size:13px;color:var(--grayMut)}
+  .rec .tier{font-size:11px;color:var(--cyan);letter-spacing:.5px;text-transform:uppercase}
+  .cta{margin-top:30px;background:linear-gradient(120deg,var(--blue),var(--navy2));border:1px solid var(--blueLt);
+    border-radius:12px;padding:24px;text-align:center}
+  .hide{display:none}
+  .pill{font-size:11px;background:rgba(0,184,217,.15);color:var(--cyan);padding:3px 9px;border-radius:12px;letter-spacing:.5px}
+  .foot{margin-top:26px;font-size:11px;color:var(--grayMut);text-align:center;line-height:1.6}
+  svg text{font-family:inherit}
+  @media(max-width:620px){.edsel,.grid2{grid-template-columns:1fr}h1{font-size:24px}.card{padding:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">3<span>NEURON</span> · Governança de IA</div>
+    <div class="tag">Diagnóstico de Maturidade</div>
+  </div>
+
+  <!-- STEP 0: INTRO -->
+  <div id="intro" class="card">
+    <div class="accent"></div>
+    <h1>Sua organização está <b>pronta</b> para a IA que já está usando?</h1>
+    <p class="lead">Em 5 minutos, descubra o nível de maturidade da sua governança de inteligência artificial em 8 dimensões — e receba um plano de ação priorizado. Gratuito e sem compromisso.</p>
+    <div class="row">
+      <span class="pill">8 dimensões</span>
+      <span class="pill">~24 perguntas</span>
+      <span class="pill">relatório imediato</span>
+    </div>
+    <div class="edsel">
+      <div class="edcard" onclick="start('judiciario')">
+        <div class="k">Edição Judiciário</div>
+        <h3>Tribunais e órgãos do Judiciário</h3>
+        <p>Calibrado pela Resolução CNJ 615/2025 — Sinapses, AIA, eventos em 72h, CNIAJ.</p>
+      </div>
+      <div class="edcard" onclick="start('empresa')">
+        <div class="k">Edição Empresa / Setor Público</div>
+        <h3>Empresas e órgãos públicos</h3>
+        <p>Calibrado por LGPD, ISO/IEC 42001, NIST AI RMF e EU AI Act / PL 2338.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 1: QUESTIONNAIRE -->
+  <div id="quiz" class="card hide">
+    <div class="prog"><i id="progbar"></i></div>
+    <div class="progtxt"><span id="progq"></span><span id="progd"></span></div>
+    <div class="dimlabel" id="qdim"></div>
+    <div class="qtext" id="qtext"></div>
+    <div class="opts" id="qopts"></div>
+    <div class="nav">
+      <button class="btn alt" id="backbtn" onclick="prev()">← Voltar</button>
+      <button class="btn" id="nextbtn" onclick="next()" disabled>Próxima →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: LEAD FORM -->
+  <div id="lead" class="card hide">
+    <div class="accent"></div>
+    <h2>Quase lá — para onde enviamos seu diagnóstico?</h2>
+    <p class="muted" style="margin-bottom:20px;font-size:14px">Seu relatório completo, com o nível de maturidade e o plano de ação, aparece na próxima tela.</p>
+    <div class="grid2">
+      <div class="field"><label>Nome*</label><input id="f_nome" type="text" placeholder="Seu nome"></div>
+      <div class="field"><label>E-mail corporativo*</label><input id="f_email" type="email" placeholder="voce@org.gov.br"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Organização*</label><input id="f_org" type="text" placeholder="Tribunal / Empresa"></div>
+      <div class="field"><label>Cargo / função</label><input id="f_cargo" type="text" placeholder="Ex.: Diretor de TI, DPO"></div>
+    </div>
+    <div class="field"><label>Telefone / WhatsApp</label><input id="f_tel" type="text" placeholder="(00) 00000-0000"></div>
+    <label class="consent"><input type="checkbox" id="f_consent"> Autorizo a 3Neuron a tratar meus dados para envio do diagnóstico e contato comercial, conforme a LGPD.</label>
+    <button class="btn cyan" onclick="submitLead()">Ver meu diagnóstico →</button>
+    <p id="leaderr" class="muted" style="color:var(--red);margin-top:10px;font-size:13px"></p>
+  </div>
+
+  <!-- STEP 3: RESULTS -->
+  <div id="result" class="card hide">
+    <div class="accent"></div>
+    <div class="dimlabel">Seu resultado</div>
+    <div class="scorehero">
+      <div class="gauge" id="gauge"></div>
+      <div>
+        <h1 style="font-size:26px;margin-bottom:8px">Maturidade: <span id="r_level"></span></h1>
+        <span class="levelbadge" id="r_badge"></span>
+        <p class="muted" id="r_summary" style="margin-top:12px;max-width:430px;font-size:14px"></p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:30px;font-size:17px">Maturidade por dimensão</h2>
+    <div class="dims" id="dims"></div>
+
+    <div style="margin-top:30px;display:flex;gap:30px;flex-wrap:wrap;align-items:center">
+      <div id="radar"></div>
+      <div style="flex:1;min-width:240px">
+        <h2 style="font-size:17px;margin-bottom:10px">Suas 3 prioridades</h2>
+        <div class="recs" id="recs"></div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <div class="dimlabel" style="color:var(--cyan)">Próximo passo</div>
+      <h2 style="margin:6px 0 10px" id="cta_title"></h2>
+      <p class="muted" style="max-width:560px;margin:0 auto 18px;font-size:14px" id="cta_sub"></p>
+      <button class="btn cyan" onclick="window.open(CONFIG.ctaUrl,'_blank')">Agendar conversa com a 3Neuron</button>
+      <button class="btn alt" onclick="location.reload()" style="margin-left:10px">Refazer</button>
+    </div>
+  </div>
+
+  <div class="foot">
+    3Neuron Consultech · BPM · Gestão Estratégica · Transformação Digital · Pré-Fábrica de Software<br>
+    Diagnóstico de maturidade — instrumento de autoavaliação. Não constitui parecer jurídico nem auditoria formal.
+  </div>
+</div>
+
+<script>
+/* ======================= CONFIG (ajustar pela 3Neuron) ======================= */
+const CONFIG = {
+  // Endpoint para receber o lead (CRM, Pipedrive, Make/Zapier webhook, Google Forms, etc.).
+  // Deixe "" para apenas exibir o resultado sem enviar (modo demonstração).
+  leadEndpoint: "",
+  ctaUrl: "mailto:comercial@3neuron.com.br?subject=Workshop%20Governanca%20de%20IA"
+};
+
+/* ======================= MODELO DE DIMENSÕES E PERGUNTAS ======================= */
+// Cada dimensão mapeia para uma Trilha do programa. Perguntas com texto por edição (jud/emp).
+const SCALE = [
+  {v:0,t:"Não temos / não sei"},
+  {v:1,t:"Existe de forma informal"},
+  {v:2,t:"Em desenvolvimento"},
+  {v:3,t:"Definido e documentado"},
+  {v:4,t:"Gerenciado e monitorado"}
+];
+
+const DIMS = [
+  {id:"inv", nome:"Inventário e visibilidade", tier:"Trilha 1 — Diagnóstico",
+   q:[
+    {jud:"Temos um inventário de TODAS as soluções de IA em uso (inclusive uso pessoal de LLMs por magistrados e servidores).",
+     emp:"Temos um inventário de TODAS as iniciativas de IA em uso (inclusive shadow AI e IA embarcada em SaaS)."},
+    {jud:"Sabemos quais soluções de IA estão em produção sem estarem registradas no Sinapses.",
+     emp:"Sabemos quais sistemas de IA processam dados sensíveis ou de clientes, e onde."},
+    {both:"O inventário é atualizado periodicamente, com responsável definido por cada solução."}
+   ]},
+  {id:"risk", nome:"Classificação de risco", tier:"Trilha 1 — Diagnóstico",
+   q:[
+    {jud:"Cada solução de IA tem uma classificação de risco (vedado / alto AR1-AR5 / baixo BR1-BR8) formalmente atribuída.",
+     emp:"Cada iniciativa de IA tem um nível de risco atribuído (proibido / alto / moderado / mínimo)."},
+    {both:"As classificações têm justificativa documentada e aprovada — defensável diante de um auditor ou regulador."},
+    {jud:"Verificamos ativamente se alguma solução incorre nas vedações do art. 10 da CNJ 615.",
+     emp:"Verificamos se algum uso de IA incorre em práticas proibidas (scoring social, vigilância indiscriminada etc.)."}
+   ]},
+  {id:"gov", nome:"Governança e responsabilidades", tier:"Trilha 2 — Governança",
+   q:[
+    {both:"Existe um comitê/órgão interno formal responsável por decidir e fiscalizar o uso de IA."},
+    {both:"Temos uma política de IA publicada, incluindo regras de uso de IA generativa por colaboradores."},
+    {both:"Todo novo caso de uso de IA passa por uma triagem de risco antes de entrar em operação (intake)."}
+   ]},
+  {id:"conf", nome:"Conformidade e registro", tier:"Trilha 3 — Conformidade",
+   q:[
+    {jud:"Nossas soluções de alto risco têm Avaliação de Impacto Algorítmico (AIA) documentada e vigente.",
+     emp:"Nossas iniciativas de alto risco têm avaliação de impacto (AIIA) integrada ao RIPD da LGPD."},
+    {jud:"As soluções estão cadastradas e atualizadas no Sinapses conforme a fase e a categoria de risco.",
+     emp:"Estamos endereçando os controles da ISO/IEC 42001 com evidências organizadas."},
+    {both:"Mantemos um repositório 'audit-ready' de evidências (atas, pareceres, relatórios) por solução."}
+   ]},
+  {id:"cap", nome:"Capacitação e cultura", tier:"Trilha 4 — Capacitação",
+   q:[
+    {jud:"Magistrados e servidores são capacitados ANTES de usar IA generativa em atividades funcionais.",
+     emp:"Colaboradores são capacitados em uso responsável de IA antes de operarem as ferramentas."},
+    {both:"Há trilhas de capacitação diferenciadas por papel (liderança, técnico, jurídico, usuário)."},
+    {both:"Conseguimos comprovar quem foi treinado e quando (rastreabilidade da capacitação)."}
+   ]},
+  {id:"dados", nome:"Dados e privacidade", tier:"Trilha 5 — Dados e Segurança",
+   q:[
+    {jud:"Dados sigilosos / sob segredo de justiça são anonimizados na origem antes de irem a qualquer IA externa.",
+     emp:"Dados pessoais e confidenciais são tratados com base legal e anonimização antes de alimentar modelos de IA."},
+    {both:"Temos curadoria, versionamento e controle de retenção dos dados usados pelas soluções de IA."},
+    {both:"Os contratos com fornecedores de IA vedam o uso dos nossos dados para treinamento."}
+   ]},
+  {id:"seg", nome:"Segurança de IA e incidentes", tier:"Trilha 5 — Dados e Segurança",
+   q:[
+    {both:"As soluções que processam documentos de terceiros têm defesa contra injeção de comandos (prompt injection)."},
+    {jud:"Temos um runbook pronto para notificar eventos adversos ao CNIAJ em até 72h.",
+     emp:"Temos um runbook de incidentes de IA, integrado à comunicação à ANPD quando aplicável."},
+    {both:"Monitoramos as soluções de IA quanto a desempenho, deriva (drift) e uso indevido."}
+   ]},
+  {id:"sup", nome:"Supervisão humana e desenvolvimento", tier:"Trilha 6 — Desenvolvimento",
+   q:[
+    {both:"Toda decisão apoiada por IA de alto risco tem ponto de revisão/supervisão humana desenhado."},
+    {jud:"Quando desenvolvemos IA, o registro no Sinapses e a interoperabilidade já entram no ciclo de desenvolvimento.",
+     emp:"Quando desenvolvemos IA, a conformidade (logs, explicabilidade, documentação) entra desde a concepção."},
+    {both:"Medimos o ganho real (eficiência, qualidade) das soluções de IA que colocamos em produção."}
+   ]}
+];
+
+/* recomendações por dimensão (quando o score está baixo) */
+const RECS = {
+  inv:{t:"Inventário e classificação de IA", d:"Mapear todas as soluções (inclusive uso informal) e classificar o risco de cada uma — a base de todo o resto.", tier:"Trilha 1 · Diagnóstico"},
+  risk:{t:"Matriz de risco defensável", d:"Documentar e validar a classificação de risco com justificativa formal — sua defesa contra reclassificação.", tier:"Trilha 1 · Diagnóstico"},
+  gov:{t:"Comitê e política de IA", d:"Instalar a governança: quem decide, quem fiscaliza, com política e porta de entrada (intake) para novos usos.", tier:"Trilha 2 · Governança"},
+  conf:{t:"Avaliação de impacto e registro", d:"Executar as AIAs de alto risco e organizar o registro e as evidências de conformidade.", tier:"Trilha 3 · Conformidade"},
+  cap:{t:"Letramento em IA", d:"Capacitar a equipe antes do uso, com trilhas por papel e certificação rastreável.", tier:"Trilha 4 · Capacitação"},
+  dados:{t:"Governança de dados para IA", d:"Estruturar anonimização, curadoria e cláusulas de fornecedores — onde mora o risco de vazamento.", tier:"Trilha 5 · Dados e Segurança"},
+  seg:{t:"Segurança de IA e resposta a incidentes", d:"Blindar contra prompt injection e implantar o runbook de incidentes e o monitoramento contínuo.", tier:"Trilha 5 · Dados e Segurança"},
+  sup:{t:"Supervisão humana e desenvolvimento conforme", d:"Desenhar a supervisão humana e desenvolver novas soluções já conformes desde a concepção.", tier:"Trilha 6 · Desenvolvimento"}
+};
+
+const LEVELS = [
+  {n:"Inexistente", c:"var(--red)", min:0,  s:"A IA já é usada, mas sem qualquer governança. O risco é alto e invisível — começar pelo diagnóstico é urgente."},
+  {n:"Inicial",     c:"var(--red)", min:15, s:"Há iniciativas isoladas e informais. Falta estrutura, documentação e responsáveis. Exposição relevante."},
+  {n:"Em desenvolvimento", c:"var(--amber)", min:35, s:"A governança começou, mas com lacunas importantes. Consolidar agora evita retrabalho e risco."},
+  {n:"Definido",    c:"var(--amber)", min:55, s:"Boa base: processos e papéis existem. O foco passa a ser cobertura completa e operação contínua."},
+  {n:"Gerenciado",  c:"var(--green)", min:75, s:"Governança madura e monitorada. O próximo salto é otimização e governança embarcada no desenvolvimento."},
+  {n:"Otimizado",   c:"var(--green)", min:90, s:"Referência. A governança vira vantagem competitiva — velocidade de adoção com risco sob controle."}
+];
+
+/* ======================= ESTADO ======================= */
+let edition=null, items=[], idx=0, answers={};
+function start(ed){
+  edition=ed; items=[];
+  DIMS.forEach(d=>d.q.forEach((q,qi)=>{
+    const text = q.both || q[edition] || q.jud;
+    items.push({dim:d.id, dimNome:d.nome, text});
+  }));
+  document.getElementById('intro').classList.add('hide');
+  document.getElementById('quiz').classList.remove('hide');
+  idx=0; render();
+}
+function render(){
+  const it=items[idx];
+  document.getElementById('qdim').textContent=it.dimNome;
+  document.getElementById('qtext').textContent=it.text;
+  const pct=Math.round((idx)/items.length*100);
+  document.getElementById('progbar').style.width=pct+"%";
+  document.getElementById('progq').textContent="Pergunta "+(idx+1)+" de "+items.length;
+  document.getElementById('progd').textContent=it.dimNome;
+  const box=document.getElementById('qopts'); box.innerHTML="";
+  SCALE.forEach(o=>{
+    const sel = answers[idx]===o.v;
+    const el=document.createElement('div');
+    el.className="opt"+(sel?" sel":"");
+    el.innerHTML='<span class="dot"></span><span>'+o.t+'</span>';
+    el.onclick=()=>{answers[idx]=o.v; render();};
+    box.appendChild(el);
+  });
+  document.getElementById('backbtn').style.visibility = idx===0 ? "hidden":"visible";
+  document.getElementById('nextbtn').disabled = answers[idx]===undefined;
+  document.getElementById('nextbtn').textContent = idx===items.length-1 ? "Finalizar →" : "Próxima →";
+}
+function next(){ if(answers[idx]===undefined)return;
+  if(idx<items.length-1){idx++;render();} else gotoLead(); }
+function prev(){ if(idx>0){idx--;render();} }
+function gotoLead(){
+  document.getElementById('quiz').classList.add('hide');
+  document.getElementById('lead').classList.remove('hide');
+}
+
+/* ======================= SCORING ======================= */
+function scoreByDim(){
+  const out={};
+  DIMS.forEach(d=>{
+    let sum=0,n=0;
+    items.forEach((it,i)=>{ if(it.dim===d.id){ sum+=(answers[i]||0); n++; } });
+    out[d.id]={pct: Math.round(sum/(n*4)*100), nome:d.nome, tier:d.tier};
+  });
+  return out;
+}
+function overall(dimScores){
+  const vals=Object.values(dimScores).map(d=>d.pct);
+  return Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+}
+function levelFor(pct){ let L=LEVELS[0]; LEVELS.forEach(l=>{if(pct>=l.min)L=l;}); return L; }
+function colorFor(pct){ return pct<35?"var(--red)":pct<70?"var(--amber)":"var(--green)"; }
+
+/* ======================= LEAD ======================= */
+function submitLead(){
+  const nome=val('f_nome'),email=val('f_email'),org=val('f_org');
+  const err=document.getElementById('leaderr');
+  if(!nome||!email||!org){ err.textContent="Preencha nome, e-mail e organização."; return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent="E-mail inválido."; return; }
+  if(!document.getElementById('f_consent').checked){ err.textContent="É preciso autorizar o tratamento dos dados (LGPD)."; return; }
+  err.textContent="";
+  const dimScores=scoreByDim(), score=overall(dimScores);
+  const payload={ edicao:edition, nome, email, organizacao:org, cargo:val('f_cargo'), telefone:val('f_tel'),
+    score, nivel:levelFor(score).n, dimensoes:dimScores, data:new Date().toISOString() };
+  if(CONFIG.leadEndpoint){
+    fetch(CONFIG.leadEndpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+      .catch(()=>{});
+  } else { console.log("LEAD (modo demonstração):", payload); }
+  showResults(dimScores, score);
+}
+function val(id){ return document.getElementById(id).value.trim(); }
+
+/* ======================= RESULTADO ======================= */
+function showResults(dimScores, score){
+  document.getElementById('lead').classList.add('hide');
+  const r=document.getElementById('result'); r.classList.remove('hide');
+  window.scrollTo(0,0);
+  const L=levelFor(score);
+  document.getElementById('r_level').textContent=L.n;
+  const badge=document.getElementById('r_badge');
+  badge.textContent=score+"% de maturidade"; badge.style.background=L.c; badge.style.color="#fff";
+  document.getElementById('r_summary').textContent=L.s;
+  document.getElementById('gauge').innerHTML=gaugeSVG(score, L.c);
+
+  // dimensões ordenadas (pior -> melhor)
+  const arr=Object.entries(dimScores).map(([id,d])=>({id,...d})).sort((a,b)=>a.pct-b.pct);
+  const dimsBox=document.getElementById('dims'); dimsBox.innerHTML="";
+  arr.slice().sort((a,b)=>b.pct-a.pct).forEach(d=>{
+    const c=colorFor(d.pct);
+    dimsBox.insertAdjacentHTML('beforeend',
+      '<div class="dimrow"><div><div class="nm">'+d.nome+'</div><div class="bar"><i style="width:'+d.pct+'%;background:'+c+'"></i></div></div><div class="pc">'+d.pct+'%</div></div>');
+  });
+
+  // radar
+  document.getElementById('radar').innerHTML=radarSVG(arr);
+
+  // top 3 prioridades (menores scores)
+  const recsBox=document.getElementById('recs'); recsBox.innerHTML="";
+  arr.slice(0,3).forEach(d=>{
+    const rc=RECS[d.id];
+    recsBox.insertAdjacentHTML('beforeend',
+      '<div class="rec"><div class="tier">'+rc.tier+'</div><div class="t">'+rc.t+'</div><div class="d">'+rc.d+'</div></div>');
+  });
+
+  // CTA por nível
+  if(score<55){
+    document.getElementById('cta_title').textContent="Comece pelo Workshop Executivo (Trilha 0→1)";
+    document.getElementById('cta_sub').textContent="Uma sessão executiva traduz seu resultado em prioridades e um diagnóstico completo. É o ponto de partida de menor fricção e maior valor.";
+  } else {
+    document.getElementById('cta_title').textContent="Vamos fechar as lacunas e operar a governança";
+    document.getElementById('cta_sub').textContent="Sua base é boa — o próximo passo é cobertura completa, operação contínua e governança embarcada no desenvolvimento.";
+  }
+}
+
+/* ======================= GRÁFICOS SVG ======================= */
+function gaugeSVG(pct,color){
+  const r=58,c=2*Math.PI*r,off=c*(1-pct/100);
+  return '<svg width="150" height="150" viewBox="0 0 150 150">'+
+    '<circle cx="75" cy="75" r="'+r+'" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="13"/>'+
+    '<circle cx="75" cy="75" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="13" stroke-linecap="round" '+
+    'stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'" transform="rotate(-90 75 75)"/>'+
+    '<text x="75" y="70" text-anchor="middle" font-size="34" font-weight="700" fill="#fff">'+pct+'</text>'+
+    '<text x="75" y="92" text-anchor="middle" font-size="12" fill="#A0AEC0">de 100</text></svg>';
+}
+function radarSVG(arr){
+  const order=DIMS.map(d=>d.id);
+  const data=order.map(id=>arr.find(a=>a.id===id));
+  const cx=130,cy=130,R=100,N=data.length;
+  let grid="",axes="",poly="";
+  [0.25,0.5,0.75,1].forEach(f=>{
+    let p="";
+    for(let i=0;i<N;i++){const a=Math.PI*2*i/N-Math.PI/2;p+=(cx+Math.cos(a)*R*f)+","+(cy+Math.sin(a)*R*f)+" ";}
+    grid+='<polygon points="'+p+'" fill="none" stroke="rgba(255,255,255,.08)"/>';
+  });
+  let pts="";
+  for(let i=0;i<N;i++){
+    const a=Math.PI*2*i/N-Math.PI/2, f=(data[i].pct/100);
+    const x=cx+Math.cos(a)*R*f, y=cy+Math.sin(a)*R*f;
+    pts+=x+","+y+" ";
+    axes+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+Math.cos(a)*R)+'" y2="'+(cy+Math.sin(a)*R)+'" stroke="rgba(255,255,255,.08)"/>';
+    const lx=cx+Math.cos(a)*(R+14), ly=cy+Math.sin(a)*(R+14);
+    axes+='<text x="'+lx+'" y="'+ly+'" font-size="9" fill="#A0AEC0" text-anchor="middle">'+(i+1)+'</text>';
+  }
+  poly='<polygon points="'+pts+'" fill="rgba(0,184,217,.25)" stroke="#00B8D9" stroke-width="2"/>';
+  return '<svg width="260" height="260" viewBox="0 0 260 260">'+grid+axes+poly+'</svg>';
+}
+</script>
+</body>
+</html>
