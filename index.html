@@ -191,10 +191,11 @@
 <script>
 /* ======================= CONFIG (ajustar pela 3Neuron) ======================= */
 const CONFIG = {
-  // Endpoint para receber o lead (CRM, Pipedrive, Make/Zapier webhook, Google Forms, etc.).
-  // Deixe "" para apenas exibir o resultado sem enviar (modo demonstração).
-  leadEndpoint: "",
-  ctaUrl: "mailto:comercial@3neuron.com.br?subject=Workshop%20Governanca%20de%20IA"
+  // Os preenchimentos são enviados por e-mail via FormSubmit (sem servidor).
+  // Para trocar o destino, mude o e-mail abaixo (e reative no FormSubmit) — ou
+  // troque por um webhook de CRM. Deixe "" para voltar ao modo demonstração.
+  leadEndpoint: "https://formsubmit.co/ajax/rafael1205@gmail.com",
+  ctaUrl: "mailto:rafael1205@gmail.com?subject=Workshop%20Governanca%20de%20IA"
 };
 
 /* ======================= MODELO DE DIMENSÕES E PERGUNTAS ======================= */
@@ -356,12 +357,20 @@ function submitLead(){
   if(!document.getElementById('f_consent').checked){ err.textContent="É preciso autorizar o tratamento dos dados (LGPD)."; return; }
   err.textContent="";
   const dimScores=scoreByDim(), score=overall(dimScores);
-  const payload={ edicao:edition, nome, email, organizacao:org, cargo:val('f_cargo'), telefone:val('f_tel'),
-    score, nivel:levelFor(score).n, dimensoes:dimScores, data:new Date().toISOString() };
+  const nivel=levelFor(score).n;
+  const flat={
+    _subject:"Diagnóstico de Maturidade IA — "+org+" ("+score+"% · "+nivel+")",
+    _template:"table",
+    _captcha:"false",
+    "Nome":nome, "E-mail":email, "Organização":org,
+    "Cargo":val('f_cargo')||"-", "Telefone":val('f_tel')||"-",
+    "Edição":edition==="judiciario"?"Judiciário (CNJ 615)":"Empresa / Setor Público",
+    "Score geral":score+"%", "Nível de maturidade":nivel
+  };
+  Object.values(dimScores).forEach(function(d){ flat["Dimensão · "+d.nome]=d.pct+"%"; });
   if(CONFIG.leadEndpoint){
-    fetch(CONFIG.leadEndpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
-      .catch(()=>{});
-  } else { console.log("LEAD (modo demonstração):", payload); }
+    fetch(CONFIG.leadEndpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(flat)}).catch(function(){});
+  } else { console.log("LEAD (modo demonstração):", flat); }
   showResults(dimScores, score);
 }
 function val(id){ return document.getElementById(id).value.trim(); }
