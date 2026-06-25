@@ -235,7 +235,7 @@ const DIMS = [
     {jud:"Temos um inventário de TODAS as soluções de IA em uso (inclusive uso pessoal de LLMs por magistrados e servidores).",
      emp:"Temos um inventário de TODAS as iniciativas de IA em uso (inclusive shadow AI e IA embarcada em SaaS)."},
     {jud:"Sabemos quais soluções de IA estão em produção sem estarem registradas no Sinapses.",
-     emp:"Sabemos quais sistemas de IA processam dados sensíveis ou de clientes, e onde."},
+     emp:"Sabemos quais sistemas de IA processam dados pessoais sensíveis (de clientes ou cidadãos), e onde."},
     {both:"O inventário é atualizado periodicamente, com responsável definido por cada solução."}
    ]},
   {id:"risk", nome:"Classificação de risco", tier:"Trilha 1 — Diagnóstico",
@@ -264,7 +264,7 @@ const DIMS = [
    q:[
     {jud:"Magistrados e servidores são capacitados ANTES de usar IA generativa em atividades funcionais.",
      emp:"Colaboradores são capacitados em uso responsável de IA antes de operarem as ferramentas."},
-    {both:"Há trilhas de capacitação diferenciadas por papel (liderança, técnico, jurídico, usuário)."},
+    {both:"Há trilhas de capacitação diferenciadas por papel (liderança, técnico, jurídico/compliance, usuário final)."},
     {both:"Conseguimos comprovar quem foi treinado e quando (rastreabilidade da capacitação)."}
    ]},
   {id:"dados", nome:"Dados e privacidade", tier:"Trilha 5 — Dados e Segurança",
@@ -315,8 +315,9 @@ const LEVELS = [
 let edition=null, items=[], idx=0, answers={};
 function start(ed){
   edition=ed; items=[];
+  const ekey = ed==='judiciario' ? 'jud' : 'emp';
   DIMS.forEach(d=>d.q.forEach((q,qi)=>{
-    const text = q.both || q[edition] || q.jud;
+    const text = q.both || q[ekey] || q.jud;
     items.push({dim:d.id, dimNome:d.nome, text});
   }));
   document.getElementById('intro').classList.add('hide');
