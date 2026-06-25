@@ -219,10 +219,10 @@
     </div>
 
     <div class="cta">
-      <div class="dimlabel" style="color:var(--cyan)">Próximo passo</div>
+      <div class="dimlabel" style="color:var(--cyan)">Conheça o programa</div>
       <h2 style="margin:6px 0 10px" id="cta_title"></h2>
       <p class="muted" style="max-width:560px;margin:0 auto 18px;font-size:14px" id="cta_sub"></p>
-      <button class="btn cyan" onclick="window.open(CONFIG.ctaUrl,'_blank')">Agendar conversa com a 3Neuron</button>
+      <button class="btn cyan" onclick="window.open(CONFIG.ctaUrl,'_blank')">Quero conhecer o programa →</button>
       <button class="btn alt" onclick="location.reload()" style="margin-left:10px">Refazer</button>
     </div>
   </div>
@@ -240,7 +240,7 @@ const CONFIG = {
   // Para trocar o destino, mude o e-mail abaixo (e reative no FormSubmit), ou
   // troque por um webhook de CRM. Deixe "" para voltar ao modo demonstração.
   leadEndpoint: "https://formsubmit.co/ajax/rafael1205@gmail.com",
-  ctaUrl: "mailto:rafael1205@gmail.com?subject=Workshop%20Governanca%20de%20IA"
+  ctaUrl: "mailto:rafael1205@gmail.com?subject=Conhecer%20o%20Programa%203Neuron%20de%20Governanca%20de%20IA"
 };
 
 /* ======================= MODELO DE DIMENSÕES E PERGUNTAS ======================= */
@@ -459,11 +459,11 @@ function showResults(dimScores, score){
 
   // CTA por nível
   if(score<55){
-    document.getElementById('cta_title').textContent="Comece pelo Workshop Executivo (Trilha 0→1)";
-    document.getElementById('cta_sub').textContent="Uma sessão executiva traduz seu resultado em prioridades e um diagnóstico completo. É o ponto de partida de menor fricção e maior valor.";
+    document.getElementById('cta_title').textContent="Conheça o Programa 3Neuron de Governança de IA";
+    document.getElementById('cta_sub').textContent="Nossa metodologia em trilhas tira sua organização do risco invisível e estrutura a governança do zero: inventário, classificação de risco, conformidade, capacitação e segurança, calibrada para o seu contexto.";
   } else {
-    document.getElementById('cta_title').textContent="Vamos fechar as lacunas e operar a governança";
-    document.getElementById('cta_sub').textContent="Sua base é boa, o próximo passo é cobertura completa, operação contínua e governança embarcada no desenvolvimento.";
+    document.getElementById('cta_title').textContent="Conheça o Programa 3Neuron de Governança de IA";
+    document.getElementById('cta_sub').textContent="Sua base é boa. Nossa metodologia em trilhas fecha as últimas lacunas e coloca a governança em operação: cobertura completa, evidências audit ready e governança embarcada no desenvolvimento.";
   }
 }
 
