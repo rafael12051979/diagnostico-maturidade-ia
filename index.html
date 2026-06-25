@@ -83,6 +83,22 @@
   #lead .field input,#lead .field select{background:#f4f6f9;border-color:#e1e7ef;color:var(--navy)}
   #lead .field input::placeholder{color:#9aa7b8}
   #lead .consent{color:var(--grayTx)}
+  /* card de resultado em fundo branco */
+  #result{background:#fff;border-color:#e4e9f0;box-shadow:0 14px 44px rgba(13,27,42,.14)}
+  #result .dimlabel{color:var(--blue)}
+  #result h1{color:var(--navy)}
+  #result h2{color:var(--navy)}
+  #result .muted{color:var(--grayTx)}
+  #result .dimrow .nm{color:var(--navy)}
+  #result .dimrow .pc{color:var(--grayTx)}
+  #result .bar{background:#e9eef5}
+  #result .rec{background:#f4f6f9}
+  #result .rec .t{color:var(--navy)}
+  #result .rec .d{color:var(--grayTx)}
+  #result .rec .tier{color:#0182a3}
+  /* o painel de CTA continua escuro: mantém textos claros */
+  #result .cta h2{color:#fff}
+  #result .cta .muted{color:#cbd6e6}
   .nav{display:flex;justify-content:space-between;margin-top:26px}
   .field{margin-bottom:14px}
   .field label{display:block;font-size:13px;color:var(--grayMut);margin-bottom:6px}
@@ -455,11 +471,11 @@ function showResults(dimScores, score){
 function gaugeSVG(pct,color){
   const r=58,c=2*Math.PI*r,off=c*(1-pct/100);
   return '<svg width="150" height="150" viewBox="0 0 150 150">'+
-    '<circle cx="75" cy="75" r="'+r+'" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="13"/>'+
+    '<circle cx="75" cy="75" r="'+r+'" fill="none" stroke="#dfe6ef" stroke-width="13"/>'+
     '<circle cx="75" cy="75" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="13" stroke-linecap="round" '+
     'stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'" transform="rotate(-90 75 75)"/>'+
-    '<text x="75" y="70" text-anchor="middle" font-size="34" font-weight="700" fill="#fff">'+pct+'</text>'+
-    '<text x="75" y="92" text-anchor="middle" font-size="12" fill="#A0AEC0">de 100</text></svg>';
+    '<text x="75" y="70" text-anchor="middle" font-size="34" font-weight="700" fill="#0D1B2A">'+pct+'</text>'+
+    '<text x="75" y="92" text-anchor="middle" font-size="12" fill="#4A5568">de 100</text></svg>';
 }
 function radarSVG(arr){
   const order=DIMS.map(d=>d.id);
@@ -469,16 +485,16 @@ function radarSVG(arr){
   [0.25,0.5,0.75,1].forEach(f=>{
     let p="";
     for(let i=0;i<N;i++){const a=Math.PI*2*i/N-Math.PI/2;p+=(cx+Math.cos(a)*R*f)+","+(cy+Math.sin(a)*R*f)+" ";}
-    grid+='<polygon points="'+p+'" fill="none" stroke="rgba(255,255,255,.08)"/>';
+    grid+='<polygon points="'+p+'" fill="none" stroke="#dfe6ef"/>';
   });
   let pts="";
   for(let i=0;i<N;i++){
     const a=Math.PI*2*i/N-Math.PI/2, f=(data[i].pct/100);
     const x=cx+Math.cos(a)*R*f, y=cy+Math.sin(a)*R*f;
     pts+=x+","+y+" ";
-    axes+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+Math.cos(a)*R)+'" y2="'+(cy+Math.sin(a)*R)+'" stroke="rgba(255,255,255,.08)"/>';
+    axes+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+Math.cos(a)*R)+'" y2="'+(cy+Math.sin(a)*R)+'" stroke="#dfe6ef"/>';
     const lx=cx+Math.cos(a)*(R+14), ly=cy+Math.sin(a)*(R+14);
-    axes+='<text x="'+lx+'" y="'+ly+'" font-size="9" fill="#A0AEC0" text-anchor="middle">'+(i+1)+'</text>';
+    axes+='<text x="'+lx+'" y="'+ly+'" font-size="9" fill="#4A5568" text-anchor="middle">'+(i+1)+'</text>';
   }
   poly='<polygon points="'+pts+'" fill="rgba(0,184,217,.25)" stroke="#00B8D9" stroke-width="2"/>';
   return '<svg width="260" height="260" viewBox="0 0 260 260">'+grid+axes+poly+'</svg>';
