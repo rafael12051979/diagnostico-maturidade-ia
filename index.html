@@ -126,7 +126,7 @@
   <div id="intro" class="card">
     <div class="accent"></div>
     <h1>Sua organização está <b>pronta</b> para a IA que já está usando?</h1>
-    <p class="lead">Em 5 minutos, descubra o nível de maturidade da sua governança de inteligência artificial em 8 dimensões — e receba um plano de ação priorizado. Gratuito e sem compromisso.</p>
+    <p class="lead">Em 5 minutos, descubra o nível de maturidade da sua governança de inteligência artificial em 8 dimensões, e receba um plano de ação priorizado. Gratuito e sem compromisso.</p>
     <div class="row">
       <span class="pill">8 dimensões</span>
       <span class="pill">~24 perguntas</span>
@@ -136,7 +136,7 @@
       <div class="edcard" onclick="start('judiciario')">
         <div class="k">Edição Judiciário</div>
         <h3>Tribunais e órgãos do Judiciário</h3>
-        <p>Calibrado pela Resolução CNJ 615/2025 — Sinapses, AIA, eventos em 72h, CNIAJ.</p>
+        <p>Calibrado pela Resolução CNJ 615/2025, Sinapses, AIA, eventos em 72h, CNIAJ.</p>
       </div>
       <div class="edcard" onclick="start('empresa')">
         <div class="k">Edição Empresa / Setor Público</div>
@@ -162,7 +162,7 @@
   <!-- STEP 2: LEAD FORM -->
   <div id="lead" class="card hide">
     <div class="accent"></div>
-    <h2>Quase lá — para onde enviamos seu diagnóstico?</h2>
+    <h2>Quase lá, para onde enviamos seu diagnóstico?</h2>
     <p class="muted" style="margin-bottom:20px;font-size:14px">Seu relatório completo, com o nível de maturidade e o plano de ação, aparece na próxima tela.</p>
     <div class="grid2">
       <div class="field"><label>Nome*</label><input id="f_nome" type="text" placeholder="Seu nome"></div>
@@ -213,7 +213,7 @@
 
   <div class="foot">
     3Neuron Consultech · BPM · Gestão Estratégica · Transformação Digital · Pré-Fábrica de Software<br>
-    Diagnóstico de maturidade — instrumento de autoavaliação. Não constitui parecer jurídico nem auditoria formal.
+    Diagnóstico de maturidade, instrumento de autoavaliação. Não constitui parecer jurídico nem auditoria formal.
   </div>
 </div>
 
@@ -221,7 +221,7 @@
 /* ======================= CONFIG (ajustar pela 3Neuron) ======================= */
 const CONFIG = {
   // Os preenchimentos são enviados por e-mail via FormSubmit (sem servidor).
-  // Para trocar o destino, mude o e-mail abaixo (e reative no FormSubmit) — ou
+  // Para trocar o destino, mude o e-mail abaixo (e reative no FormSubmit), ou
   // troque por um webhook de CRM. Deixe "" para voltar ao modo demonstração.
   leadEndpoint: "https://formsubmit.co/ajax/rafael1205@gmail.com",
   ctaUrl: "mailto:rafael1205@gmail.com?subject=Workshop%20Governanca%20de%20IA"
@@ -238,7 +238,7 @@ const SCALE = [
 ];
 
 const DIMS = [
-  {id:"inv", nome:"Inventário e visibilidade", tier:"Trilha 1 — Diagnóstico",
+  {id:"inv", nome:"Inventário e visibilidade", tier:"Trilha 1 · Diagnóstico",
    q:[
     {jud:"Temos um inventário de TODAS as soluções de IA em uso (inclusive uso pessoal de LLMs por magistrados e servidores).",
      emp:"Temos um inventário de TODAS as iniciativas de IA em uso (inclusive shadow AI e IA embarcada em SaaS)."},
@@ -246,21 +246,21 @@ const DIMS = [
      emp:"Sabemos quais sistemas de IA processam dados pessoais sensíveis (de clientes ou cidadãos), e onde."},
     {both:"O inventário é atualizado periodicamente, com responsável definido por cada solução."}
    ]},
-  {id:"risk", nome:"Classificação de risco", tier:"Trilha 1 — Diagnóstico",
+  {id:"risk", nome:"Classificação de risco", tier:"Trilha 1 · Diagnóstico",
    q:[
     {jud:"Cada solução de IA tem uma classificação de risco (vedado / alto AR1-AR5 / baixo BR1-BR8) formalmente atribuída.",
      emp:"Cada iniciativa de IA tem um nível de risco atribuído (proibido / alto / moderado / mínimo)."},
-    {both:"As classificações têm justificativa documentada e aprovada — defensável diante de um auditor ou regulador."},
+    {both:"As classificações têm justificativa documentada e aprovada, defensável diante de um auditor ou regulador."},
     {jud:"Verificamos ativamente se alguma solução incorre nas vedações do art. 10 da CNJ 615.",
      emp:"Verificamos se algum uso de IA incorre em práticas proibidas (scoring social, vigilância indiscriminada etc.)."}
    ]},
-  {id:"gov", nome:"Governança e responsabilidades", tier:"Trilha 2 — Governança",
+  {id:"gov", nome:"Governança e responsabilidades", tier:"Trilha 2 · Governança",
    q:[
     {both:"Existe um comitê/órgão interno formal responsável por decidir e fiscalizar o uso de IA."},
     {both:"Temos uma política de IA publicada, incluindo regras de uso de IA generativa por colaboradores."},
     {both:"Todo novo caso de uso de IA passa por uma triagem de risco antes de entrar em operação (intake)."}
    ]},
-  {id:"conf", nome:"Conformidade e registro", tier:"Trilha 3 — Conformidade",
+  {id:"conf", nome:"Conformidade e registro", tier:"Trilha 3 · Conformidade",
    q:[
     {jud:"Nossas soluções de alto risco têm Avaliação de Impacto Algorítmico (AIA) documentada e vigente.",
      emp:"Nossas iniciativas de alto risco têm avaliação de impacto (AIIA) integrada ao RIPD da LGPD."},
@@ -268,28 +268,28 @@ const DIMS = [
      emp:"Estamos endereçando os controles da ISO/IEC 42001 com evidências organizadas."},
     {both:"Mantemos um repositório 'audit-ready' de evidências (atas, pareceres, relatórios) por solução."}
    ]},
-  {id:"cap", nome:"Capacitação e cultura", tier:"Trilha 4 — Capacitação",
+  {id:"cap", nome:"Capacitação e cultura", tier:"Trilha 4 · Capacitação",
    q:[
     {jud:"Magistrados e servidores são capacitados ANTES de usar IA generativa em atividades funcionais.",
      emp:"Colaboradores são capacitados em uso responsável de IA antes de operarem as ferramentas."},
     {both:"Há trilhas de capacitação diferenciadas por papel (liderança, técnico, jurídico/compliance, usuário final)."},
     {both:"Conseguimos comprovar quem foi treinado e quando (rastreabilidade da capacitação)."}
    ]},
-  {id:"dados", nome:"Dados e privacidade", tier:"Trilha 5 — Dados e Segurança",
+  {id:"dados", nome:"Dados e privacidade", tier:"Trilha 5 · Dados e Segurança",
    q:[
     {jud:"Dados sigilosos / sob segredo de justiça são anonimizados na origem antes de irem a qualquer IA externa.",
      emp:"Dados pessoais e confidenciais são tratados com base legal e anonimização antes de alimentar modelos de IA."},
     {both:"Temos curadoria, versionamento e controle de retenção dos dados usados pelas soluções de IA."},
     {both:"Os contratos com fornecedores de IA vedam o uso dos nossos dados para treinamento."}
    ]},
-  {id:"seg", nome:"Segurança de IA e incidentes", tier:"Trilha 5 — Dados e Segurança",
+  {id:"seg", nome:"Segurança de IA e incidentes", tier:"Trilha 5 · Dados e Segurança",
    q:[
     {both:"As soluções que processam documentos de terceiros têm defesa contra injeção de comandos (prompt injection)."},
     {jud:"Temos um runbook pronto para notificar eventos adversos ao CNIAJ em até 72h.",
      emp:"Temos um runbook de incidentes de IA, integrado à comunicação à ANPD quando aplicável."},
     {both:"Monitoramos as soluções de IA quanto a desempenho, deriva (drift) e uso indevido."}
    ]},
-  {id:"sup", nome:"Supervisão humana e desenvolvimento", tier:"Trilha 6 — Desenvolvimento",
+  {id:"sup", nome:"Supervisão humana e desenvolvimento", tier:"Trilha 6 · Desenvolvimento",
    q:[
     {both:"Toda decisão apoiada por IA de alto risco tem ponto de revisão/supervisão humana desenhado."},
     {jud:"Quando desenvolvemos IA, o registro no Sinapses e a interoperabilidade já entram no ciclo de desenvolvimento.",
@@ -300,23 +300,23 @@ const DIMS = [
 
 /* recomendações por dimensão (quando o score está baixo) */
 const RECS = {
-  inv:{t:"Inventário e classificação de IA", d:"Mapear todas as soluções (inclusive uso informal) e classificar o risco de cada uma — a base de todo o resto.", tier:"Trilha 1 · Diagnóstico"},
-  risk:{t:"Matriz de risco defensável", d:"Documentar e validar a classificação de risco com justificativa formal — sua defesa contra reclassificação.", tier:"Trilha 1 · Diagnóstico"},
+  inv:{t:"Inventário e classificação de IA", d:"Mapear todas as soluções (inclusive uso informal) e classificar o risco de cada uma, a base de todo o resto.", tier:"Trilha 1 · Diagnóstico"},
+  risk:{t:"Matriz de risco defensável", d:"Documentar e validar a classificação de risco com justificativa formal, sua defesa contra reclassificação.", tier:"Trilha 1 · Diagnóstico"},
   gov:{t:"Comitê e política de IA", d:"Instalar a governança: quem decide, quem fiscaliza, com política e porta de entrada (intake) para novos usos.", tier:"Trilha 2 · Governança"},
   conf:{t:"Avaliação de impacto e registro", d:"Executar as AIAs de alto risco e organizar o registro e as evidências de conformidade.", tier:"Trilha 3 · Conformidade"},
   cap:{t:"Letramento em IA", d:"Capacitar a equipe antes do uso, com trilhas por papel e certificação rastreável.", tier:"Trilha 4 · Capacitação"},
-  dados:{t:"Governança de dados para IA", d:"Estruturar anonimização, curadoria e cláusulas de fornecedores — onde mora o risco de vazamento.", tier:"Trilha 5 · Dados e Segurança"},
+  dados:{t:"Governança de dados para IA", d:"Estruturar anonimização, curadoria e cláusulas de fornecedores, onde mora o risco de vazamento.", tier:"Trilha 5 · Dados e Segurança"},
   seg:{t:"Segurança de IA e resposta a incidentes", d:"Blindar contra prompt injection e implantar o runbook de incidentes e o monitoramento contínuo.", tier:"Trilha 5 · Dados e Segurança"},
   sup:{t:"Supervisão humana e desenvolvimento conforme", d:"Desenhar a supervisão humana e desenvolver novas soluções já conformes desde a concepção.", tier:"Trilha 6 · Desenvolvimento"}
 };
 
 const LEVELS = [
-  {n:"Inexistente", c:"var(--red)", min:0,  s:"A IA já é usada, mas sem qualquer governança. O risco é alto e invisível — começar pelo diagnóstico é urgente."},
+  {n:"Inexistente", c:"var(--red)", min:0,  s:"A IA já é usada, mas sem qualquer governança. O risco é alto e invisível, começar pelo diagnóstico é urgente."},
   {n:"Inicial",     c:"var(--red)", min:15, s:"Há iniciativas isoladas e informais. Falta estrutura, documentação e responsáveis. Exposição relevante."},
   {n:"Em desenvolvimento", c:"var(--amber)", min:35, s:"A governança começou, mas com lacunas importantes. Consolidar agora evita retrabalho e risco."},
   {n:"Definido",    c:"var(--amber)", min:55, s:"Boa base: processos e papéis existem. O foco passa a ser cobertura completa e operação contínua."},
   {n:"Gerenciado",  c:"var(--green)", min:75, s:"Governança madura e monitorada. O próximo salto é otimização e governança embarcada no desenvolvimento."},
-  {n:"Otimizado",   c:"var(--green)", min:90, s:"Referência. A governança vira vantagem competitiva — velocidade de adoção com risco sob controle."}
+  {n:"Otimizado",   c:"var(--green)", min:90, s:"Referência. A governança vira vantagem competitiva, velocidade de adoção com risco sob controle."}
 ];
 
 /* ======================= ESTADO ======================= */
@@ -393,7 +393,7 @@ function submitLead(){
   const dimScores=scoreByDim(), score=overall(dimScores);
   const nivel=levelFor(score).n;
   const flat={
-    _subject:"Diagnóstico de Maturidade IA — "+org+" ("+score+"% · "+nivel+")",
+    _subject:"Diagnóstico de Maturidade IA · "+org+" ("+score+"% · "+nivel+")",
     _template:"table",
     _captcha:"false",
     "Nome":nome, "E-mail":email, "Organização":org,
@@ -447,7 +447,7 @@ function showResults(dimScores, score){
     document.getElementById('cta_sub').textContent="Uma sessão executiva traduz seu resultado em prioridades e um diagnóstico completo. É o ponto de partida de menor fricção e maior valor.";
   } else {
     document.getElementById('cta_title').textContent="Vamos fechar as lacunas e operar a governança";
-    document.getElementById('cta_sub').textContent="Sua base é boa — o próximo passo é cobertura completa, operação contínua e governança embarcada no desenvolvimento.";
+    document.getElementById('cta_sub').textContent="Sua base é boa, o próximo passo é cobertura completa, operação contínua e governança embarcada no desenvolvimento.";
   }
 }
 
